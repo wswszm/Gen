@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.windliven.spoc.modules.search.dao.SsExpiryBranchDao">
+
+
+	
+	<sql id="myColumns">
+	   
+			a.id as id,
+			a.ss_school_major_id as ssSchoolMajorId,
+			a.apply_expiry_branch as applyExpiryBranch,
+			a.expiry_year as expiryYear,
+			a.expiry_month as expiryMonth,
+			a.expiry_day as expiryDay,
+			a.create_by as createBy,
+			a.create_date as createDate,
+			a.update_by as updateBy,
+			a.update_date as updateDate,
+			a.remarks as remarks,
+			a.del_flag as delFlag	  
+	</sql>
+	
+	<sql id="myColumns1">
+	   
+			a.id as id,
+			a.ss_school_major_id as ssSchoolMajorId,
+			a.apply_expiry_branch as applyExpiryBranch,
+			a.expiry_year as expiryYear,
+			a.expiry_month as expiryMonth,
+			a.expiry_day as expiryDay,
+			a.create_by as createBy,
+			a.create_date as createDate,
+			a.update_by as updateBy,
+			a.update_date as updateDate,
+			a.remarks as remarks,
+			a.del_flag as delFlag	  
+	</sql>
+
+      
+          	<insert id="insert" useGeneratedKeys="true" keyProperty="id"  parameterType="com.windliven.spoc.modules.search.entity.SsExpiryBranch">
+    
+        INSERT INTO ss_expiry_branch 
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="id!=null and id!=''">
+				id ,
+		        </if>
+
+
+				<if test="ssSchoolMajorId!=null and ssSchoolMajorId!=''">
+				ss_school_major_id ,
+		        </if>
+
+
+				<if test="applyExpiryBranch!=null and applyExpiryBranch!=''">
+				apply_expiry_branch ,
+		        </if>
+
+
+				<if test="expiryYear!=null and expiryYear!=''">
+				expiry_year ,
+		        </if>
+
+
+				<if test="expiryMonth!=null and expiryMonth!=''">
+				expiry_month ,
+		        </if>
+
+
+				<if test="expiryDay!=null and expiryDay!=''">
+				expiry_day ,
+		        </if>
+
+
+				<if test="createBy != null and createBy.id != null and createBy.id != ''">
+					create_by,
+				</if>
+
+
+				<if test="createDate != null ">
+					create_date,
+				</if>
+
+
+				<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+					update_by,
+				</if>
+
+
+				<if test="updateDate != null ">
+					update_date,
+		        </if>
+
+
+				<if test="remarks!=null and remarks!=''">
+				remarks ,
+		        </if>
+
+
+				<if test="delFlag!=null and delFlag!=''">
+				del_flag 
+		        </if>
+
+
+        </trim>
+         <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id!=null and id!=''">
+				#{id} ,
+		    </if>
+
+			<if test="ssSchoolMajorId!=null and ssSchoolMajorId!=''">
+				#{ssSchoolMajorId} ,
+		    </if>
+
+			<if test="applyExpiryBranch!=null and applyExpiryBranch!=''">
+				#{applyExpiryBranch} ,
+		    </if>
+
+			<if test="expiryYear!=null and expiryYear!=''">
+				#{expiryYear} ,
+		    </if>
+
+			<if test="expiryMonth!=null and expiryMonth!=''">
+				#{expiryMonth} ,
+		    </if>
+
+			<if test="expiryDay!=null and expiryDay!=''">
+				#{expiryDay} ,
+		    </if>
+
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				#{createBy.id} ,
+			 </if>
+
+			<if test="createDate != null ">
+			#{createDate} ,
+		   </if>
+
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+			   #{updateBy.id} ,
+		    </if>
+
+			<if test="updateDate != null ">
+			#{updateDate} ,
+			</if>
+
+			<if test="remarks!=null and remarks!=''">
+				#{remarks} ,
+		    </if>
+
+			<if test="delFlag!=null and delFlag!=''">
+				#{delFlag} 
+		    </if>
+
+        </trim>
+  
+		
+	</insert>
+	 <delete id="delete" parameterType="com.windliven.spoc.modules.search.entity.SsExpiryBranch">
+        DELETE FROM ss_expiry_branch WHERE
+        id = #{id}
+				<if test="ssSchoolMajorId!=null and ssSchoolMajorId!=''">
+				and ss_school_major_id = #{ssSchoolMajorId}
+				</if>
+
+
+				<if test="applyExpiryBranch!=null and applyExpiryBranch!=''">
+				and apply_expiry_branch = #{applyExpiryBranch}
+				</if>
+
+
+				<if test="expiryYear!=null and expiryYear!=''">
+				and expiry_year = #{expiryYear}
+				</if>
+
+
+				<if test="expiryMonth!=null and expiryMonth!=''">
+				and expiry_month = #{expiryMonth}
+				</if>
+
+
+				<if test="expiryDay!=null and expiryDay!=''">
+				and expiry_day = #{expiryDay}
+				</if>
+
+
+				<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				and create_by = #{createBy.id}
+		   		</if>
+
+
+
+
+
+				<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+				and update_by = #{updateBy.id}
+		        </if>
+
+
+
+
+
+				<if test="remarks!=null and remarks!=''">
+				and remarks = #{remarks}
+				</if>
+
+
+				<if test="delFlag!=null and delFlag!=''">
+				and del_flag = #{delFlag}
+				</if>
+
+
+
+    </delete>
+
+	<select id="get" resultType="com.windliven.spoc.modules.search.entity.SsExpiryBranch"  parameterType="String">
+		SELECT <include refid="myColumns"/>
+		FROM ss_expiry_branch a
+		WHERE
+		a.id =#{id}
+	</select>
+
+    
+    <select id="findById" resultType="com.windliven.spoc.modules.search.entity.SsExpiryBranch"  parameterType="map">
+		SELECT <include refid="myColumns"/>
+	 
+		    FROM ss_expiry_branch a
+	        WHERE 
+		        a.id = #{id}
+		         
+	  
+	</select>
+
+    
+	<update id="update"  parameterType="com.windliven.spoc.modules.search.entity.SsExpiryBranch" >
+    
+        UPDATE ss_expiry_branch 
+        <set>
+
+			<if test="ssSchoolMajorId!=null and ssSchoolMajorId!=''">
+				ss_school_major_id = #{ssSchoolMajorId} ,
+		    </if>
+
+			<if test="applyExpiryBranch!=null and applyExpiryBranch!=''">
+				apply_expiry_branch = #{applyExpiryBranch} ,
+		    </if>
+
+			<if test="expiryYear!=null and expiryYear!=''">
+				expiry_year = #{expiryYear} ,
+		    </if>
+
+			<if test="expiryMonth!=null and expiryMonth!=''">
+				expiry_month = #{expiryMonth} ,
+		    </if>
+
+			<if test="expiryDay!=null and expiryDay!=''">
+				expiry_day = #{expiryDay} ,
+		    </if>
+
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				create_by = #{createBy.id} ,
+			</if>
+
+
+
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+				update_by = #{updateBy.id} ,
+			</if>
+
+
+
+			<if test="remarks!=null and remarks!=''">
+				remarks = #{remarks} ,
+		    </if>
+
+			<if test="delFlag!=null and delFlag!=''">
+				del_flag = #{delFlag} 
+		    </if>
+	        </set>
+        WHERE 
+	        id = #{id} 
+   
+	</update>
+	
+	<select id="findSsExpiryBranchList" parameterType="map" resultType="com.windliven.spoc.modules.search.entity.SsExpiryBranch">
+		select 
+		<include refid="myColumns"/>
+		 from ss_expiry_branch a
+		<where>
+			<include refid="myWhereInclude"/>
+		</where>
+
+		
+	</select>
+
+	<select id="findList" parameterType="com.windliven.spoc.modules.search.entity.SsExpiryBranch" resultType="com.windliven.spoc.modules.search.entity.SsExpiryBranch">
+	select
+	<include refid="myColumns"/>
+	from ss_expiry_branch a
+	<where>
+		<include refid="myWhereInclude"/>
+	</where>
+
+
+	</select>
+	<select id="findAllList" parameterType="com.windliven.spoc.modules.search.entity.SsExpiryBranch" resultType="com.windliven.spoc.modules.search.entity.SsExpiryBranch">
+	select
+	<include refid="myColumns"/>
+	from ss_expiry_branch a
+	<where>
+		<include refid="myWhereInclude"/>
+	</where>
+
+
+	</select>
+
+
+<select id="findSsExpiryBranchCount" parameterType="map"
+		resultType="int">
+		select count(*) from ss_expiry_branch a
+		<where>
+			<include refid="myWhereInclude"/>
+		</where>
+
+	</select>
+	
+		
+	
+
+	<sql id="myWhereInclude">
+
+	<if test="id!=null and id!=''">
+		AND a.id = #{id}
+	</if>
+
+	<if test="ssSchoolMajorId!=null and ssSchoolMajorId!=''">
+		AND a.ss_school_major_id = #{ssSchoolMajorId}
+	</if>
+
+	<if test="applyExpiryBranch!=null and applyExpiryBranch!=''">
+		AND a.apply_expiry_branch = #{applyExpiryBranch}
+	</if>
+
+	<if test="expiryYear!=null and expiryYear!=''">
+		AND a.expiry_year = #{expiryYear}
+	</if>
+
+	<if test="expiryMonth!=null and expiryMonth!=''">
+		AND a.expiry_month = #{expiryMonth}
+	</if>
+
+	<if test="expiryDay!=null and expiryDay!=''">
+		AND a.expiry_day = #{expiryDay}
+	</if>
+
+	<if test="createBy != null and createBy.id != null and createBy.id != ''">
+		AND a.create_by = #{createBy.id}
+	</if>
+
+
+
+	<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+		AND a.update_by = #{updateBy.id}
+	</if>
+
+
+
+	<if test="remarks!=null and remarks!=''">
+		AND a.remarks = #{remarks}
+	</if>
+
+	<if test="delFlag!=null and delFlag!=''">
+		AND a.del_flag = #{delFlag}
+	</if>
+		</sql>
+</mapper>
+

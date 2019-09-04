@@ -1,0 +1,246 @@
+<#include "/macro.include"/>
+<#assign className = table.className>   
+<#assign classNameFirstLower = table.classNameFirstLower>   
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<#macro mapperEl value>${r"#{"}${value}}</#macro>
+<#macro mapperElWhere value>${r"#{entity."}${value}}</#macro>
+<#macro namespace>${className}.</#macro>
+
+<mapper namespace="${basepackage}.dao.${className}Dao">
+
+
+	
+	<sql id="myColumns">
+	   
+		<#list table.columns as column>
+			a.${column.sqlName} as ${column.columnNameLower}<#if column_has_next>,
+		</#if></#list>
+	  
+	</sql>
+	
+	<sql id="myColumns1">
+	   
+		<#list table.columns as column>
+			a.${column.sqlName} as ${column.columnNameLower}<#if column_has_next>,
+		</#if></#list>
+	  
+	</sql>
+
+	  <#if table.idColumn? exists>
+      
+          	<insert id="insert" useGeneratedKeys="true" keyProperty="${table.idColumn.columnNameFirstLower}"  parameterType="${basepackage}.entity.${className}">
+    
+        INSERT INTO ${table.sqlName} 
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+        <#list table.columns as column>
+			<#if column.columnNameFirstLower ='createBy'>
+				<if test="createBy != null and createBy.id != null and createBy.id != ''">
+					create_by<#if column_has_next>,</#if>
+				</if>
+		   <#elseif column.columnNameFirstLower ='updateBy'>
+				<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+					update_by<#if column_has_next>,</#if>
+				</if>
+			<#elseif column.columnNameFirstLower ='createDate'>
+				<if test="createDate != null ">
+					create_date<#if column_has_next>,</#if>
+				</if>
+			<#elseif column.columnNameFirstLower ='updateDate'>
+				<if test="updateDate != null ">
+					update_date<#if column_has_next>,</#if>
+		        </if>
+           <#else>
+				<if test="${column.columnNameFirstLower}!=null and ${column.columnNameFirstLower}!=''">
+				${column.sqlName} <#if column_has_next>,</#if>
+		        </if>
+		   </#if>
+
+
+        </#list>
+        </trim>
+         <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <#list table.columns as column>
+		<#if column.columnNameFirstLower ='createBy'>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				<@mapperEl 'createBy.id'/> <#if column_has_next>,</#if>
+			 </if>
+		<#elseif column.columnNameFirstLower ='updateBy'>
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+			   <@mapperEl 'updateBy.id'/> <#if column_has_next>,</#if>
+		    </if>
+		<#elseif column.columnNameFirstLower ='createDate'>
+			<if test="createDate != null ">
+			<@mapperEl 'createDate'/> <#if column_has_next>,</#if>
+		   </if>
+		<#elseif column.columnNameFirstLower ='updateDate'>
+			<if test="updateDate != null ">
+			<@mapperEl 'updateDate'/> <#if column_has_next>,</#if>
+			</if>
+		<#else>
+			<if test="${column.columnNameFirstLower}!=null and ${column.columnNameFirstLower}!=''">
+				<@mapperEl column.columnNameFirstLower/> <#if column_has_next>,</#if>
+		    </if>
+		</#if>
+
+        </#list>        
+        </trim>
+  
+		
+	</insert>
+	 <delete id="delete" parameterType="${basepackage}.entity.${className}">
+        DELETE FROM ${table.sqlName} WHERE
+        <#list table.compositeIdColumns as column>
+        ${column.sqlName} = <@mapperEl 'id'/>
+	    </#list>
+        <#list table.notPkColumns as column1>
+			<#if column1.columnNameFirstLower ='createBy'>
+				<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				and ${column1.sqlName} = <@mapperEl 'createBy.id'/>
+		   		</if>
+			<#elseif column1.columnNameFirstLower ='updateBy'>
+				<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+				and ${column1.sqlName} = <@mapperEl 'updateBy.id'/>
+		        </if>
+			<#elseif column1.columnNameFirstLower ='createDate' || column1.columnNameFirstLower ='updateDate'>
+
+			<#else>
+				<if test="${column1.columnNameFirstLower}!=null and ${column1.columnNameFirstLower}!=''">
+				and ${column1.sqlName} = <@mapperEl column1.columnNameFirstLower/>
+				</if>
+			</#if>
+
+
+		 </#list>
+
+    </delete>
+
+	<select id="get" resultType="${basepackage}.entity.${className}"  parameterType="String">
+		SELECT <include refid="myColumns"/>
+		FROM ${table.sqlName} a
+		WHERE
+		<#list table.compositeIdColumns as column>
+		a.${column.sqlName} =<@mapperEl 'id'/>
+	    </#list>
+	</select>
+
+    
+    <select id="findById" resultType="${basepackage}.entity.${className}"  parameterType="map">
+		SELECT <include refid="myColumns"/>
+	 
+		    FROM ${table.sqlName} a
+	        WHERE 
+				<#list table.compositeIdColumns as column>
+		        a.${column.sqlName} = <@mapperEl 'id'/>
+		        <#list table.columns as column1>
+		        <#if column1.sqlName =='split_key'>
+		        <if test="${column1.columnNameFirstLower}!=null and ${column1.columnNameFirstLower}!=''"> and a.${column1.sqlName} = <@mapperEl column1.columnNameFirstLower/></if>
+		        </#if>
+		        </#list>
+		         <#if column_has_next> and </#if>
+		        </#list>    
+	  
+	</select>
+	  </#if>
+
+    
+	<update id="update"  parameterType="${basepackage}.entity.${className}" >
+    
+        UPDATE ${table.sqlName} 
+        <set>
+	        <#list table.notPkColumns as column>
+
+			<#if column.columnNameFirstLower ='createBy'>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				${column.sqlName} = <@mapperEl 'createBy.id'/> <#if column_has_next>,</#if>
+			</if>
+			<#elseif column.columnNameFirstLower ='updateBy'>
+			<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+				${column.sqlName} = <@mapperEl 'updateBy.id'/> <#if column_has_next>,</#if>
+			</if>
+            <#elseif column.columnNameFirstLower ='createDate' || column.columnNameFirstLower ='updateDate'>
+
+			<#else>
+			<if test="${column.columnNameFirstLower}!=null and ${column.columnNameFirstLower}!=''">
+				${column.sqlName} = <@mapperEl column.columnNameFirstLower/> <#if column_has_next>,</#if>
+		    </if>
+			</#if>
+	        </#list>
+	        </set>
+        WHERE 
+        	<#list table.compositeIdColumns as column>
+	        ${column.sqlName} = <@mapperEl column.columnNameLower/> <#if column_has_next>,</#if>
+	        </#list>	        
+   
+	</update>
+	
+	<select id="find${className}List" parameterType="map" resultType="${basepackage}.entity.${className}">
+		select 
+		<include refid="myColumns"/>
+		 from ${table.sqlName} a
+		<where>
+			<include refid="myWhereInclude"/>
+		</where>
+
+		
+	</select>
+
+	<select id="findList" parameterType="${basepackage}.entity.${className}" resultType="${basepackage}.entity.${className}">
+	select
+	<include refid="myColumns"/>
+	from ${table.sqlName} a
+	<where>
+		<include refid="myWhereInclude"/>
+	</where>
+
+
+	</select>
+	<select id="findAllList" parameterType="${basepackage}.entity.${className}" resultType="${basepackage}.entity.${className}">
+	select
+	<include refid="myColumns"/>
+	from ${table.sqlName} a
+	<where>
+		<include refid="myWhereInclude"/>
+	</where>
+
+
+	</select>
+
+
+<select id="find${className}Count" parameterType="map"
+		resultType="int">
+		select count(*) from ${table.sqlName} a
+		<where>
+			<include refid="myWhereInclude"/>
+		</where>
+
+	</select>
+	
+		
+	
+
+	<sql id="myWhereInclude">
+	<#list table.columns as column>
+
+	<#if column.columnNameFirstLower ='createBy'>
+	<if test="createBy != null and createBy.id != null and createBy.id != ''">
+		AND a.${column.sqlName} = <@mapperEl 'createBy.id'/>
+	</if>
+	<#elseif column.columnNameFirstLower ='updateBy'>
+	<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
+		AND a.${column.sqlName} = <@mapperEl 'updateBy.id'/>
+	</if>
+    <#elseif column.columnNameFirstLower ='createDate' || column.columnNameFirstLower ='updateDate'>
+
+	<#else>
+	<if test="${column.columnNameFirstLower}!=null and ${column.columnNameFirstLower}!=''">
+		AND a.${column.sqlName} = <@mapperEl column.columnNameFirstLower/>
+	</if>
+	</#if>
+			</#list>
+		</sql>
+</mapper>
+
