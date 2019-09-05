@@ -5,7 +5,7 @@
 	test
 	</comment>
 	
-	<entry key="basepackage">com.windliven.spoc.modules.search</entry>
+	<entry key="basepackage">com.windliven.spoc.modules.kwgl</entry>
 	
 	<!-- jsp namespace: web/${namespace}/${className}/list.jsp -->
 	<entry key="namespace">pages</entry>
@@ -14,8 +14,8 @@
 
 	<entry key="tableRemovePrefixes"></entry>
 	
-	<entry key="jdbc.username">ivygate_develop</entry>
-	<entry key="jdbc.password">ivy@2017</entry>
+	<entry key="jdbc.username">kwgltest</entry>
+	<entry key="jdbc.password">kwgl@2018</entry>
 	<!--<entry key="jdbc.username">root</entry>-->
 	<!--<entry key="jdbc.password">ivygate2019@!</entry>-->
 	<entry key="jdbc.schema"></entry>
@@ -34,7 +34,7 @@
 		
 	<!-- Mysql -->
 	<!--<entry key="jdbc.url">jdbc:mysql://39.106.187.117:3306/ivygate?characterEncoding=UTF-8</entry>-->
-	<entry key="jdbc.url">jdbc:mysql://rm-2ze9aqmtcs2o24qg5o.mysql.rds.aliyuncs.com:3306/ivygate_test?characterEncoding=utf-8</entry>
+	<entry key="jdbc.url">jdbc:mysql://rm-2zeev7644xgcb269uo.mysql.rds.aliyuncs.com:3306/kwgl_glg_test?characterEncoding=utf-8</entry>
 	<entry key="jdbc.driver">com.mysql.jdbc.Driver</entry>
 	
 

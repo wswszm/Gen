@@ -53,6 +53,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				<if test="updateDate != null ">
 					update_date<#if column_has_next>,</#if>
 		        </if>
+			<#elseif column.columnNameFirstLower ='cjsj'>
+			<if test="cjsj != null ">
+				cjsj<#if column_has_next>,</#if>
+			</if>
            <#else>
 				<if test="${column.columnNameFirstLower}!=null and ${column.columnNameFirstLower}!=''">
 				${column.sqlName} <#if column_has_next>,</#if>
@@ -80,6 +84,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="updateDate != null ">
 			<@mapperEl 'updateDate'/> <#if column_has_next>,</#if>
 			</if>
+		<#elseif column.columnNameFirstLower ='cjsj'>
+			<if test="cjsj != null ">
+				<@mapperEl 'cjsj'/> <#if column_has_next>,</#if>
+			</if>
 		<#else>
 			<if test="${column.columnNameFirstLower}!=null and ${column.columnNameFirstLower}!=''">
 				<@mapperEl column.columnNameFirstLower/> <#if column_has_next>,</#if>
@@ -94,28 +102,8 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	 <delete id="delete" parameterType="${basepackage}.entity.${className}">
         DELETE FROM ${table.sqlName} WHERE
         <#list table.compositeIdColumns as column>
-        ${column.sqlName} = <@mapperEl 'id'/>
+        ${column.sqlName} = <@mapperEl 'bh'/>
 	    </#list>
-        <#list table.notPkColumns as column1>
-			<#if column1.columnNameFirstLower ='createBy'>
-				<if test="createBy != null and createBy.id != null and createBy.id != ''">
-				and ${column1.sqlName} = <@mapperEl 'createBy.id'/>
-		   		</if>
-			<#elseif column1.columnNameFirstLower ='updateBy'>
-				<if test="updateBy != null and updateBy.id != null and updateBy.id != ''">
-				and ${column1.sqlName} = <@mapperEl 'updateBy.id'/>
-		        </if>
-			<#elseif column1.columnNameFirstLower ='createDate' || column1.columnNameFirstLower ='updateDate'>
-
-			<#else>
-				<if test="${column1.columnNameFirstLower}!=null and ${column1.columnNameFirstLower}!=''">
-				and ${column1.sqlName} = <@mapperEl column1.columnNameFirstLower/>
-				</if>
-			</#if>
-
-
-		 </#list>
-
     </delete>
 
 	<select id="get" resultType="${basepackage}.entity.${className}"  parameterType="String">
@@ -123,7 +111,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		FROM ${table.sqlName} a
 		WHERE
 		<#list table.compositeIdColumns as column>
-		a.${column.sqlName} =<@mapperEl 'id'/>
+		a.${column.sqlName} =<@mapperEl 'bh'/>
 	    </#list>
 	</select>
 
@@ -134,7 +122,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		    FROM ${table.sqlName} a
 	        WHERE 
 				<#list table.compositeIdColumns as column>
-		        a.${column.sqlName} = <@mapperEl 'id'/>
+		        a.${column.sqlName} = <@mapperEl 'bh'/>
 		        <#list table.columns as column1>
 		        <#if column1.sqlName =='split_key'>
 		        <if test="${column1.columnNameFirstLower}!=null and ${column1.columnNameFirstLower}!=''"> and a.${column1.sqlName} = <@mapperEl column1.columnNameFirstLower/></if>
@@ -163,6 +151,10 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			</if>
             <#elseif column.columnNameFirstLower ='createDate' || column.columnNameFirstLower ='updateDate'>
 
+			<#elseif column.columnNameFirstLower ='cjsj'>
+				<if test="cjsj != null ">
+				${column.sqlName} = <@mapperEl 'cjsj'/> <#if column_has_next>,</#if>
+				</if>
 			<#else>
 			<if test="${column.columnNameFirstLower}!=null and ${column.columnNameFirstLower}!=''">
 				${column.sqlName} = <@mapperEl column.columnNameFirstLower/> <#if column_has_next>,</#if>
@@ -234,6 +226,11 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		AND a.${column.sqlName} = <@mapperEl 'updateBy.id'/>
 	</if>
     <#elseif column.columnNameFirstLower ='createDate' || column.columnNameFirstLower ='updateDate'>
+
+	<#elseif column.columnNameFirstLower ='cjsj'>
+	<if test="cjsj != null ">
+		${column.sqlName} = <@mapperEl 'cjsj'/> <#if column_has_next>,</#if>
+	</if>
 
 	<#else>
 	<if test="${column.columnNameFirstLower}!=null and ${column.columnNameFirstLower}!=''">
